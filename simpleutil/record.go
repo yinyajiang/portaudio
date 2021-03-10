@@ -58,6 +58,7 @@ loop:
 	for {
 		err = stream.Read()
 		if err != nil {
+			err = nil
 			return
 		}
 		err = binary.Write(w, binary.BigEndian, in)
