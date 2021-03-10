@@ -8,7 +8,7 @@ import (
 	"os/signal"
 
 	"github.com/bobertlo/go-mpg123/mpg123"
-	"github.com/gordonklaus/portaudio"
+	"github.com/yinyajiang/portaudio"
 )
 
 func main() {
