@@ -10,7 +10,7 @@ import (
 )
 
 //RecordAiff ...
-func RecordAiff(ctx context.Context, w io.WriteSeeker) (err error) {
+func RecordAiff(ctx context.Context, w io.WriteSeeker) (recordDur int64, err error) {
 	err = writeHAiffeader(w)
 	if err != nil {
 		return
@@ -34,6 +34,8 @@ func RecordAiff(ctx context.Context, w io.WriteSeeker) (err error) {
 			return
 		}
 		err = binary.Write(w, binary.BigEndian, int32(4*nSamples+8))
+
+		recordDur = int64(float64(nSamples) / 44100 / 1 * 1000)
 	}()
 
 	err = portaudio.Initialize()
@@ -42,7 +44,7 @@ func RecordAiff(ctx context.Context, w io.WriteSeeker) (err error) {
 	}
 
 	defer portaudio.Terminate()
-	in := make([]int32, 64)
+	in := make([]int32, 128)
 	stream, err := portaudio.OpenDefaultStream(1, 0, 44100, len(in), in)
 	if err != nil {
 		return
